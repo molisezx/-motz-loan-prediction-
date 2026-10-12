@@ -1,0 +1,126 @@
+{
+  "rows_raw": 1000,
+  "rows_clean": 1000,
+  "missing_before": {
+    "Gender": 31,
+    "Married": 11,
+    "Dependents": 32,
+    "Self_Employed": 51,
+    "CoapplicantIncome": 9,
+    "LoanAmount": 40,
+    "Loan_Amount_Term": 38,
+    "Credit_History": 86
+  },
+  "missing_after": 0,
+  "imputation_strategy": {
+    "Gender": "mode -> Male",
+    "Married": "mode -> Yes",
+    "Dependents": "mode -> 0",
+    "Self_Employed": "mode -> No",
+    "Credit_History": "mode -> 1.0",
+    "CoapplicantIncome": "median -> 770",
+    "LoanAmount": "median -> 172000",
+    "Loan_Amount_Term": "median -> 360"
+  },
+  "outliers": {
+    "ApplicantIncome": {
+      "lower_fence": -2278.4,
+      "upper_fence": 12184.6,
+      "outliers_capped": 45
+    },
+    "CoapplicantIncome": {
+      "lower_fence": -3251.6,
+      "upper_fence": 5419.4,
+      "outliers_capped": 43
+    },
+    "LoanAmount": {
+      "lower_fence": -95000.0,
+      "upper_fence": 459000.0,
+      "outliers_capped": 46
+    },
+    "Loan_Amount_Term": {
+      "lower_fence": 60.0,
+      "upper_fence": 540.0,
+      "outliers_capped": 0
+    }
+  },
+  "descriptive_stats": {
+    "ApplicantIncome": {
+      "count": 1000.0,
+      "mean": 5261.85,
+      "std": 2906.76,
+      "min": 825.0,
+      "25%": 3145.25,
+      "50%": 4371.5,
+      "75%": 6761.0,
+      "max": 12184.62
+    },
+    "CoapplicantIncome": {
+      "count": 1000.0,
+      "mean": 1317.48,
+      "std": 1595.2,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 770.0,
+      "75%": 2167.75,
+      "max": 5419.38
+    },
+    "LoanAmount": {
+      "count": 1000.0,
+      "mean": 195098.0,
+      "std": 109330.4,
+      "min": 30000.0,
+      "25%": 112750.0,
+      "50%": 172000.0,
+      "75%": 251250.0,
+      "max": 459000.0
+    },
+    "Loan_Amount_Term": {
+      "count": 1000.0,
+      "mean": 310.08,
+      "std": 91.35,
+      "min": 60.0,
+      "25%": 240.0,
+      "50%": 360.0,
+      "75%": 360.0,
+      "max": 480.0
+    }
+  },
+  "categorical_value_counts": {
+    "Gender": {
+      "Male": 807,
+      "Female": 193
+    },
+    "Married": {
+      "Yes": 649,
+      "No": 351
+    },
+    "Dependents": {
+      "0": 604,
+      "1": 158,
+      "2": 155,
+      "3+": 83
+    },
+    "Education": {
+      "Graduate": 785,
+      "Not Graduate": 215
+    },
+    "Self_Employed": {
+      "No": 889,
+      "Yes": 111
+    },
+    "Property_Area": {
+      "Semiurban": 376,
+      "Urban": 345,
+      "Rural": 279
+    },
+    "Credit_History": {
+      "1.0": 874,
+      "0.0": 126
+    }
+  },
+  "target_distribution": {
+    "Y": 744,
+    "N": 256
+  }
+}

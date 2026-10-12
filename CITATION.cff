@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you reference this work, please cite it as below."
+title: "Motz Loan Prediction: An Explainable Machine-Learning System"
+abstract: >-
+  A reproducible, explainable machine-learning system that predicts loan
+  approval from applicant background data, with cost-sensitive threshold
+  optimisation and per-applicant reason codes.
+authors:
+  - name: "DIAL3110 Group Assignment"
+type: software
+license: MIT
+version: "1.0.0"
+date-released: "2026-11-03"
+keywords:
+  - machine learning
+  - credit scoring
+  - loan prediction
+  - explainable AI

@@ -1,0 +1,269 @@
+{
+  "selected_model": "Soft Voting Ensemble",
+  "model_comparison": [
+    {
+      "model": "Soft Voting Ensemble",
+      "cv_accuracy_mean": 0.845,
+      "cv_accuracy_std": 0.017,
+      "cv_precision_mean": 0.8361,
+      "cv_recall_mean": 0.9849,
+      "cv_f1_mean": 0.9044,
+      "cv_roc_auc_mean": 0.697
+    },
+    {
+      "model": "Stacking Ensemble",
+      "cv_accuracy_mean": 0.8438,
+      "cv_accuracy_std": 0.0177,
+      "cv_precision_mean": 0.835,
+      "cv_recall_mean": 0.9849,
+      "cv_f1_mean": 0.9037,
+      "cv_roc_auc_mean": 0.7412
+    },
+    {
+      "model": "Logistic Regression",
+      "cv_accuracy_mean": 0.8438,
+      "cv_accuracy_std": 0.0177,
+      "cv_precision_mean": 0.835,
+      "cv_recall_mean": 0.9849,
+      "cv_f1_mean": 0.9037,
+      "cv_roc_auc_mean": 0.7332
+    },
+    {
+      "model": "Support Vector Machine",
+      "cv_accuracy_mean": 0.8438,
+      "cv_accuracy_std": 0.0177,
+      "cv_precision_mean": 0.835,
+      "cv_recall_mean": 0.9849,
+      "cv_f1_mean": 0.9037,
+      "cv_roc_auc_mean": 0.7067
+    },
+    {
+      "model": "Gaussian Naive Bayes",
+      "cv_accuracy_mean": 0.8325,
+      "cv_accuracy_std": 0.0092,
+      "cv_precision_mean": 0.838,
+      "cv_recall_mean": 0.9613,
+      "cv_f1_mean": 0.8951,
+      "cv_roc_auc_mean": 0.7406
+    },
+    {
+      "model": "Gradient Boosting",
+      "cv_accuracy_mean": 0.8325,
+      "cv_accuracy_std": 0.0133,
+      "cv_precision_mean": 0.8317,
+      "cv_recall_mean": 0.9714,
+      "cv_f1_mean": 0.8961,
+      "cv_roc_auc_mean": 0.6849
+    },
+    {
+      "model": "Random Forest",
+      "cv_accuracy_mean": 0.8325,
+      "cv_accuracy_std": 0.0214,
+      "cv_precision_mean": 0.8311,
+      "cv_recall_mean": 0.9731,
+      "cv_f1_mean": 0.8964,
+      "cv_roc_auc_mean": 0.6829
+    },
+    {
+      "model": "K-Nearest Neighbours",
+      "cv_accuracy_mean": 0.83,
+      "cv_accuracy_std": 0.01,
+      "cv_precision_mean": 0.8343,
+      "cv_recall_mean": 0.963,
+      "cv_f1_mean": 0.8939,
+      "cv_roc_auc_mean": 0.6896
+    },
+    {
+      "model": "Decision Tree",
+      "cv_accuracy_mean": 0.7188,
+      "cv_accuracy_std": 0.0253,
+      "cv_precision_mean": 0.8319,
+      "cv_recall_mean": 0.7798,
+      "cv_f1_mean": 0.8045,
+      "cv_roc_auc_mean": 0.6616
+    }
+  ],
+  "test_metrics": {
+    "threshold": 0.5,
+    "accuracy": 0.835,
+    "precision": 0.8372,
+    "recall": 0.9664,
+    "f1": 0.8972,
+    "roc_auc": 0.7627,
+    "confusion_matrix": [
+      [
+        23,
+        28
+      ],
+      [
+        5,
+        144
+      ]
+    ]
+  },
+  "decision_threshold": 0.27,
+  "metrics_at_optimal_threshold": {
+    "threshold": 0.27,
+    "accuracy": 0.84,
+    "precision": 0.8382,
+    "recall": 0.9732,
+    "f1": 0.9006,
+    "roc_auc": 0.7627,
+    "confusion_matrix": [
+      [
+        23,
+        28
+      ],
+      [
+        4,
+        145
+      ]
+    ]
+  },
+  "cost_analysis": {
+    "cost_fn": 5.0,
+    "cost_fp": 1.0,
+    "best_threshold": 0.27,
+    "min_expected_cost": 48.0,
+    "false_negatives": 4,
+    "false_positives": 28
+  },
+  "confusion_matrix": [
+    [
+      23,
+      28
+    ],
+    [
+      5,
+      144
+    ]
+  ],
+  "permutation_importance": [
+    {
+      "feature": "Credit_History",
+      "importance_mean": 0.158,
+      "importance_std": 0.0279
+    },
+    {
+      "feature": "LoanAmount",
+      "importance_mean": 0.0105,
+      "importance_std": 0.0093
+    },
+    {
+      "feature": "ApplicantIncome",
+      "importance_mean": 0.01,
+      "importance_std": 0.0063
+    },
+    {
+      "feature": "CoapplicantIncome",
+      "importance_mean": 0.002,
+      "importance_std": 0.0024
+    },
+    {
+      "feature": "Dependents",
+      "importance_mean": 0.0015,
+      "importance_std": 0.0023
+    },
+    {
+      "feature": "Married",
+      "importance_mean": 0.0,
+      "importance_std": 0.0
+    },
+    {
+      "feature": "Gender",
+      "importance_mean": 0.0,
+      "importance_std": 0.0
+    },
+    {
+      "feature": "Education",
+      "importance_mean": 0.0,
+      "importance_std": 0.0
+    },
+    {
+      "feature": "Self_Employed",
+      "importance_mean": 0.0,
+      "importance_std": 0.0
+    },
+    {
+      "feature": "Loan_Amount_Term",
+      "importance_mean": -0.0005,
+      "importance_std": 0.0015
+    },
+    {
+      "feature": "Property_Area",
+      "importance_mean": -0.001,
+      "importance_std": 0.002
+    }
+  ],
+  "reason_code_example": {
+    "method": "occlusion (probability delta)",
+    "base_probability": 0.48848373668133566,
+    "top_reasons": [
+      {
+        "feature": "LoanAmount",
+        "contribution": -0.28773222439909757,
+        "value": 61000.0,
+        "direction": "reject"
+      },
+      {
+        "feature": "ApplicantIncome",
+        "contribution": -0.28429915611151096,
+        "value": 12184.625,
+        "direction": "reject"
+      },
+      {
+        "feature": "Property Area",
+        "contribution": -0.02394174153577816,
+        "value": "Urban",
+        "direction": "reject"
+      },
+      {
+        "feature": "Gender",
+        "contribution": 0.02075006676946256,
+        "value": "Female",
+        "direction": "approve"
+      },
+      {
+        "feature": "CoapplicantIncome",
+        "contribution": 0.01834865358239346,
+        "value": 0.0,
+        "direction": "approve"
+      },
+      {
+        "feature": "Married",
+        "contribution": 0.0,
+        "value": "Yes",
+        "direction": "approve"
+      },
+      {
+        "feature": "Dependents",
+        "contribution": 0.0,
+        "value": "0",
+        "direction": "approve"
+      },
+      {
+        "feature": "Education",
+        "contribution": 0.0,
+        "value": "Graduate",
+        "direction": "approve"
+      }
+    ]
+  },
+  "final_metrics": {
+    "accuracy": 0.835,
+    "precision": 0.8372,
+    "recall": 0.9664,
+    "f1": 0.8972,
+    "roc_auc": 0.7627,
+    "threshold": 0.27,
+    "best_params": {
+      "clf__weights": [
+        1,
+        1,
+        1
+      ]
+    },
+    "best_cv_score": 0.845
+  },
+  "adopted_model": "tuned"
+}
