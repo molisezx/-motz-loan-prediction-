@@ -1,6 +1,6 @@
 # Motz Loan Prediction — Explainable Machine Learning System
 
-[![CI](https://github.com/your-org/motz-loan-prediction/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
+[![CI](https://github.com/molisezx/-motz-loan-prediction-/actions/workflows/ci.yml/badge.svg)](https://github.com/molisezx/-motz-loan-prediction-/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Tests](https://img.shields.io/badge/tests-8%20passing-brightgreen)
