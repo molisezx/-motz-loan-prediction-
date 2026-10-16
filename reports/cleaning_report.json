@@ -1,15 +1,14 @@
 {
-  "rows_raw": 1000,
-  "rows_clean": 1000,
+  "rows_raw": 614,
+  "rows_clean": 614,
   "missing_before": {
-    "Gender": 31,
-    "Married": 11,
-    "Dependents": 32,
-    "Self_Employed": 51,
-    "CoapplicantIncome": 9,
-    "LoanAmount": 40,
-    "Loan_Amount_Term": 38,
-    "Credit_History": 86
+    "Gender": 13,
+    "Married": 3,
+    "Dependents": 15,
+    "Self_Employed": 32,
+    "LoanAmount": 22,
+    "Loan_Amount_Term": 14,
+    "Credit_History": 50
   },
   "missing_after": 0,
   "imputation_strategy": {
@@ -18,69 +17,69 @@
     "Dependents": "mode -> 0",
     "Self_Employed": "mode -> No",
     "Credit_History": "mode -> 1.0",
-    "CoapplicantIncome": "median -> 770",
-    "LoanAmount": "median -> 172000",
+    "LoanAmount": "median -> 128",
     "Loan_Amount_Term": "median -> 360"
   },
   "outliers": {
     "ApplicantIncome": {
-      "lower_fence": -2278.4,
-      "upper_fence": 12184.6,
-      "outliers_capped": 45
+      "lower_fence": -1498.8,
+      "upper_fence": 10171.2,
+      "outliers_capped": 50
     },
     "CoapplicantIncome": {
-      "lower_fence": -3251.6,
-      "upper_fence": 5419.4,
-      "outliers_capped": 43
+      "lower_fence": -3445.9,
+      "upper_fence": 5743.1,
+      "outliers_capped": 18
     },
     "LoanAmount": {
-      "lower_fence": -95000.0,
-      "upper_fence": 459000.0,
-      "outliers_capped": 46
+      "lower_fence": 3.5,
+      "upper_fence": 261.5,
+      "outliers_capped": 41
     },
     "Loan_Amount_Term": {
-      "lower_fence": 60.0,
-      "upper_fence": 540.0,
-      "outliers_capped": 0
+      "lower_fence": 360.0,
+      "upper_fence": 360.0,
+      "outliers_capped": 0,
+      "note": "skipped (zero inter-quartile range)"
     }
   },
   "descriptive_stats": {
     "ApplicantIncome": {
-      "count": 1000.0,
-      "mean": 5261.85,
-      "std": 2906.76,
-      "min": 825.0,
-      "25%": 3145.25,
-      "50%": 4371.5,
-      "75%": 6761.0,
-      "max": 12184.62
+      "count": 614.0,
+      "mean": 4617.11,
+      "std": 2479.85,
+      "min": 150.0,
+      "25%": 2877.5,
+      "50%": 3812.5,
+      "75%": 5795.0,
+      "max": 10171.25
     },
     "CoapplicantIncome": {
-      "count": 1000.0,
-      "mean": 1317.48,
-      "std": 1595.2,
+      "count": 614.0,
+      "mean": 1419.7,
+      "std": 1624.61,
       "min": 0.0,
       "25%": 0.0,
-      "50%": 770.0,
-      "75%": 2167.75,
-      "max": 5419.38
+      "50%": 1188.5,
+      "75%": 2297.25,
+      "max": 5743.12
     },
     "LoanAmount": {
-      "count": 1000.0,
-      "mean": 195098.0,
-      "std": 109330.4,
-      "min": 30000.0,
-      "25%": 112750.0,
-      "50%": 172000.0,
-      "75%": 251250.0,
-      "max": 459000.0
+      "count": 614.0,
+      "mean": 137.37,
+      "std": 55.78,
+      "min": 9.0,
+      "25%": 100.25,
+      "50%": 128.0,
+      "75%": 164.75,
+      "max": 261.5
     },
     "Loan_Amount_Term": {
-      "count": 1000.0,
-      "mean": 310.08,
-      "std": 91.35,
-      "min": 60.0,
-      "25%": 240.0,
+      "count": 614.0,
+      "mean": 342.41,
+      "std": 64.43,
+      "min": 12.0,
+      "25%": 360.0,
       "50%": 360.0,
       "75%": 360.0,
       "max": 480.0
@@ -88,39 +87,39 @@
   },
   "categorical_value_counts": {
     "Gender": {
-      "Male": 807,
-      "Female": 193
+      "Male": 502,
+      "Female": 112
     },
     "Married": {
-      "Yes": 649,
-      "No": 351
+      "Yes": 401,
+      "No": 213
     },
     "Dependents": {
-      "0": 604,
-      "1": 158,
-      "2": 155,
-      "3+": 83
+      "0": 360,
+      "1": 102,
+      "2": 101,
+      "3+": 51
     },
     "Education": {
-      "Graduate": 785,
-      "Not Graduate": 215
+      "Graduate": 480,
+      "Not Graduate": 134
     },
     "Self_Employed": {
-      "No": 889,
-      "Yes": 111
+      "No": 532,
+      "Yes": 82
     },
     "Property_Area": {
-      "Semiurban": 376,
-      "Urban": 345,
-      "Rural": 279
+      "Semiurban": 233,
+      "Urban": 202,
+      "Rural": 179
     },
     "Credit_History": {
-      "1.0": 874,
-      "0.0": 126
+      "1.0": 525,
+      "0.0": 89
     }
   },
   "target_distribution": {
-    "Y": 744,
-    "N": 256
+    "Y": 422,
+    "N": 192
   }
 }

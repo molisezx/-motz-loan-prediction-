@@ -1,26 +1,23 @@
 {
-  "selected_model": "Soft Voting Ensemble",
+  "selected_model": "Support Vector Machine",
   "baseline_metrics": {
-    "accuracy": 0.835,
-    "precision": 0.8372,
-    "recall": 0.9664,
-    "f1": 0.8972,
-    "roc_auc": 0.7627
+    "accuracy": 0.8537,
+    "precision": 0.8317,
+    "recall": 0.9882,
+    "f1": 0.9032,
+    "roc_auc": 0.7867
   },
   "tuned_metrics": {
-    "accuracy": 0.835,
-    "f1": 0.8972,
-    "roc_auc": 0.7627,
+    "accuracy": 0.8537,
+    "f1": 0.9032,
+    "roc_auc": 0.8136,
     "best_params": {
-      "clf__weights": [
-        1,
-        1,
-        1
-      ]
+      "clf__C": 0.1,
+      "clf__kernel": "linear"
     },
-    "best_cv_score": 0.845
+    "best_cv_score": 0.7962
   },
   "adopted": "tuned",
-  "n_candidates": 4,
-  "decision_threshold": 0.27
+  "n_candidates": 6,
+  "decision_threshold": 0.1
 }

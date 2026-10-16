@@ -5,3 +5,4 @@ matplotlib>=3.8
 seaborn>=0.13
 streamlit>=1.36
 joblib>=1.4
+kagglehub>=0.3

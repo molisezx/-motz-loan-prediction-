@@ -15,9 +15,10 @@ pipeline and stored in `reports/figures/`.
 
 ## 2. Data
 
-The raw extract (`data/raw/loan_data.csv`) contains 1,000 applications with 12
-columns. It intentionally contains missing values and outliers so that the
-cleaning stage is meaningful.
+The raw extract (`data/raw/loan_data.csv`) is the public Kaggle **Loan Prediction
+Problem** dataset: 614 applications with 13 columns, fetched by
+`src/fetch_kaggle_data.py`. It contains genuine missing values and outliers so
+that the cleaning stage is meaningful.
 
 | Column | Type | Notes |
 |--------|------|-------|
@@ -41,7 +42,9 @@ cleaning stage is meaningful.
    columns with the **median** (robust to skew). After cleaning: 0 missing.
 2. **Outliers** — detected with the **IQR rule** (values outside
    `Q1 - 1.5·IQR` / `Q3 + 1.5·IQR`) and **winsorised** (capped at the fences)
-   rather than deleted, preserving all records.
+   rather than deleted, preserving all records. Columns with a **zero IQR**
+   (near-constant, e.g. `Loan_Amount_Term`) are skipped, since clipping them
+   would flatten a genuine feature to a single value.
 3. **Descriptive statistics** — means, standard deviations, quartiles and
    frequency tables recorded in `reports/cleaning_report.json`.
 
@@ -69,37 +72,38 @@ fed straight into the saved pipeline.
 
 ## 5. Model determination (`src/train_model.py`)
 
-Seven algorithms spanning different inductive biases were compared with
-**stratified 5-fold cross-validation** on the 800-row training split:
+Nine candidate algorithms spanning different inductive biases were compared with
+**stratified 5-fold cross-validation** on the 491-row training split:
 
 | Model | Mean CV accuracy | Mean CV ROC-AUC |
 |-------|------------------|-----------------|
-| **Logistic Regression** | **0.844** | 0.733 |
-| Support Vector Machine | 0.844 | 0.707 |
-| Gaussian Naive Bayes | 0.833 | **0.741** |
-| Gradient Boosting | 0.833 | 0.685 |
-| Random Forest | 0.831 | 0.685 |
-| K-Nearest Neighbours | 0.830 | 0.689 |
-| Decision Tree | 0.719 | 0.662 |
+| **Support Vector Machine** | **0.792** | 0.764 |
+| Soft Voting Ensemble | 0.790 | 0.774 |
+| Logistic Regression | 0.790 | 0.727 |
+| Stacking Ensemble | 0.786 | 0.776 |
+| Random Forest | 0.782 | 0.781 |
+| K-Nearest Neighbours | 0.770 | 0.728 |
+| Gradient Boosting | 0.770 | 0.734 |
+| Gaussian Naive Bayes | 0.770 | 0.720 |
+| Decision Tree | 0.682 | 0.631 |
 
-Exact values are stored in `reports/model_metrics.json`. **Logistic regression**
-was selected because it tied for the best cross-validated accuracy while
-gave the best cross-validated accuracy while remaining fast, interpretable and
-well-calibrated for probability output — properties that matter for a lending
-decision that must be explainable.
+Exact values are stored in `reports/model_metrics.json`. The **support vector
+machine** (linear kernel) was selected: it achieved the best cross-validated
+accuracy and, once tuned, the strongest held-out ROC-AUC while remaining
+robust in the high-dimensional one-hot feature space.
 
 ## 6. Training and evaluation (`src/train_model.py`)
 
-The selected pipeline was re-trained on all 800 training rows and evaluated on a
-stratified 200-row held-out test set.
+The selected pipeline was re-trained on all 491 training rows and evaluated on a
+stratified 123-row held-out test set.
 
 | Metric | Value |
 |--------|-------|
-| Accuracy | 0.84 |
-| Precision | 0.84 |
-| Recall | 0.97 |
-| F1-score | 0.90 |
-| ROC-AUC | 0.76 |
+| Accuracy | 0.854 |
+| Precision | 0.832 |
+| Recall | 0.988 |
+| F1-score | 0.903 |
+| ROC-AUC | 0.787 |
 
 The confusion matrix (`reports/figures/07_confusion_matrix.png`) shows very high
 recall, meaning the model rarely rejects a creditworthy applicant — the more
@@ -111,22 +115,22 @@ Hyper-parameters were optimised with `GridSearchCV` (stratified 5-fold CV,
 accuracy scoring):
 
 | Parameter | Values searched |
-|-----------|-----------------|
-| `clf__C` | 0.01, 0.1, 1, 10 |
-| `clf__solver` | lbfgs |
-| `clf__class_weight` | None, balanced |
+|-----------|----------------|
+| `clf__C` | 0.1, 1, 10 |
+| `clf__kernel` | linear, rbf |
 
-**Best parameters:** `C = 0.01`, `solver = lbfgs`, `class_weight = None`.
-The tuned configuration matched the baseline closely, confirming the model is
-not over-fitting; the small `C` indicates moderate regularisation stabilises the
-predictions.
+**Best parameters:** `C = 0.1`, `kernel = linear`. The tuned configuration kept
+test accuracy unchanged while improving ROC-AUC from 0.787 to 0.814, confirming
+the model generalises rather than over-fitting; the small `C` indicates moderate
+regularisation stabilises the decision boundary.
 
 ## 8. Interpretation
 
-Feature importances (`reports/figures/09_feature_importance.png`) rank the
-standardised coefficients. `Credit_History` is by far the most influential
-predictor, followed by loan-amount and affordability-related features. This
-aligns with the exploratory correlation analysis (r = 0.46) and with domain
+Feature importances (`reports/figures/09_permutation_importance.png`) rank the
+features by the drop in accuracy when shuffled. `Credit_History` is by far the
+most influential predictor (permutation importance 0.236), followed by
+loan-amount and affordability-related features. This
+aligns with the exploratory correlation analysis (r = 0.541) and with domain
 intuition: a good credit history is the single strongest indicator of repayment.
 
 ## 9. Deployment (`dashboard/app.py`)

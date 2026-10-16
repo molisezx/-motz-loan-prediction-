@@ -1,176 +1,176 @@
 {
-  "selected_model": "Soft Voting Ensemble",
+  "selected_model": "Support Vector Machine",
   "model_comparison": [
     {
-      "model": "Soft Voting Ensemble",
-      "cv_accuracy_mean": 0.845,
-      "cv_accuracy_std": 0.017,
-      "cv_precision_mean": 0.8361,
-      "cv_recall_mean": 0.9849,
-      "cv_f1_mean": 0.9044,
-      "cv_roc_auc_mean": 0.697
+      "model": "Support Vector Machine",
+      "cv_accuracy_mean": 0.7922,
+      "cv_accuracy_std": 0.0419,
+      "cv_precision_mean": 0.7802,
+      "cv_recall_mean": 0.9734,
+      "cv_f1_mean": 0.8658,
+      "cv_roc_auc_mean": 0.764
     },
     {
-      "model": "Stacking Ensemble",
-      "cv_accuracy_mean": 0.8438,
-      "cv_accuracy_std": 0.0177,
-      "cv_precision_mean": 0.835,
-      "cv_recall_mean": 0.9849,
-      "cv_f1_mean": 0.9037,
-      "cv_roc_auc_mean": 0.7412
+      "model": "Soft Voting Ensemble",
+      "cv_accuracy_mean": 0.7901,
+      "cv_accuracy_std": 0.0463,
+      "cv_precision_mean": 0.7795,
+      "cv_recall_mean": 0.9704,
+      "cv_f1_mean": 0.8642,
+      "cv_roc_auc_mean": 0.7744
     },
     {
       "model": "Logistic Regression",
-      "cv_accuracy_mean": 0.8438,
-      "cv_accuracy_std": 0.0177,
-      "cv_precision_mean": 0.835,
-      "cv_recall_mean": 0.9849,
-      "cv_f1_mean": 0.9037,
-      "cv_roc_auc_mean": 0.7332
+      "cv_accuracy_mean": 0.7901,
+      "cv_accuracy_std": 0.0453,
+      "cv_precision_mean": 0.7796,
+      "cv_recall_mean": 0.9704,
+      "cv_f1_mean": 0.8642,
+      "cv_roc_auc_mean": 0.7265
     },
     {
-      "model": "Support Vector Machine",
-      "cv_accuracy_mean": 0.8438,
-      "cv_accuracy_std": 0.0177,
-      "cv_precision_mean": 0.835,
-      "cv_recall_mean": 0.9849,
-      "cv_f1_mean": 0.9037,
-      "cv_roc_auc_mean": 0.7067
-    },
-    {
-      "model": "Gaussian Naive Bayes",
-      "cv_accuracy_mean": 0.8325,
-      "cv_accuracy_std": 0.0092,
-      "cv_precision_mean": 0.838,
-      "cv_recall_mean": 0.9613,
-      "cv_f1_mean": 0.8951,
-      "cv_roc_auc_mean": 0.7406
-    },
-    {
-      "model": "Gradient Boosting",
-      "cv_accuracy_mean": 0.8325,
-      "cv_accuracy_std": 0.0133,
-      "cv_precision_mean": 0.8317,
-      "cv_recall_mean": 0.9714,
-      "cv_f1_mean": 0.8961,
-      "cv_roc_auc_mean": 0.6849
+      "model": "Stacking Ensemble",
+      "cv_accuracy_mean": 0.7861,
+      "cv_accuracy_std": 0.0417,
+      "cv_precision_mean": 0.7786,
+      "cv_recall_mean": 0.9645,
+      "cv_f1_mean": 0.8613,
+      "cv_roc_auc_mean": 0.7756
     },
     {
       "model": "Random Forest",
-      "cv_accuracy_mean": 0.8325,
-      "cv_accuracy_std": 0.0214,
-      "cv_precision_mean": 0.8311,
-      "cv_recall_mean": 0.9731,
-      "cv_f1_mean": 0.8964,
-      "cv_roc_auc_mean": 0.6829
+      "cv_accuracy_mean": 0.782,
+      "cv_accuracy_std": 0.048,
+      "cv_precision_mean": 0.788,
+      "cv_recall_mean": 0.9379,
+      "cv_f1_mean": 0.855,
+      "cv_roc_auc_mean": 0.7806
     },
     {
       "model": "K-Nearest Neighbours",
-      "cv_accuracy_mean": 0.83,
-      "cv_accuracy_std": 0.01,
-      "cv_precision_mean": 0.8343,
-      "cv_recall_mean": 0.963,
-      "cv_f1_mean": 0.8939,
-      "cv_roc_auc_mean": 0.6896
+      "cv_accuracy_mean": 0.7698,
+      "cv_accuracy_std": 0.0336,
+      "cv_precision_mean": 0.7851,
+      "cv_recall_mean": 0.9171,
+      "cv_f1_mean": 0.8453,
+      "cv_roc_auc_mean": 0.728
+    },
+    {
+      "model": "Gradient Boosting",
+      "cv_accuracy_mean": 0.7697,
+      "cv_accuracy_std": 0.0546,
+      "cv_precision_mean": 0.7903,
+      "cv_recall_mean": 0.9082,
+      "cv_f1_mean": 0.8443,
+      "cv_roc_auc_mean": 0.7337
+    },
+    {
+      "model": "Gaussian Naive Bayes",
+      "cv_accuracy_mean": 0.7697,
+      "cv_accuracy_std": 0.0515,
+      "cv_precision_mean": 0.7825,
+      "cv_recall_mean": 0.9231,
+      "cv_f1_mean": 0.8457,
+      "cv_roc_auc_mean": 0.7204
     },
     {
       "model": "Decision Tree",
-      "cv_accuracy_mean": 0.7188,
-      "cv_accuracy_std": 0.0253,
-      "cv_precision_mean": 0.8319,
-      "cv_recall_mean": 0.7798,
-      "cv_f1_mean": 0.8045,
-      "cv_roc_auc_mean": 0.6616
+      "cv_accuracy_mean": 0.6822,
+      "cv_accuracy_std": 0.043,
+      "cv_precision_mean": 0.7699,
+      "cv_recall_mean": 0.7687,
+      "cv_f1_mean": 0.7682,
+      "cv_roc_auc_mean": 0.6309
     }
   ],
   "test_metrics": {
     "threshold": 0.5,
-    "accuracy": 0.835,
-    "precision": 0.8372,
-    "recall": 0.9664,
-    "f1": 0.8972,
-    "roc_auc": 0.7627,
+    "accuracy": 0.8537,
+    "precision": 0.8317,
+    "recall": 0.9882,
+    "f1": 0.9032,
+    "roc_auc": 0.7867,
     "confusion_matrix": [
       [
-        23,
-        28
+        21,
+        17
       ],
       [
-        5,
-        144
+        1,
+        84
       ]
     ]
   },
-  "decision_threshold": 0.27,
+  "decision_threshold": 0.1,
   "metrics_at_optimal_threshold": {
-    "threshold": 0.27,
-    "accuracy": 0.84,
-    "precision": 0.8382,
-    "recall": 0.9732,
-    "f1": 0.9006,
-    "roc_auc": 0.7627,
+    "threshold": 0.1,
+    "accuracy": 0.8537,
+    "precision": 0.8317,
+    "recall": 0.9882,
+    "f1": 0.9032,
+    "roc_auc": 0.8136,
     "confusion_matrix": [
       [
-        23,
-        28
+        21,
+        17
       ],
       [
-        4,
-        145
+        1,
+        84
       ]
     ]
   },
   "cost_analysis": {
     "cost_fn": 5.0,
     "cost_fp": 1.0,
-    "best_threshold": 0.27,
-    "min_expected_cost": 48.0,
-    "false_negatives": 4,
-    "false_positives": 28
+    "best_threshold": 0.1,
+    "min_expected_cost": 22.0,
+    "false_negatives": 1,
+    "false_positives": 17
   },
   "confusion_matrix": [
     [
-      23,
-      28
+      21,
+      17
     ],
     [
-      5,
-      144
+      1,
+      84
     ]
   ],
   "permutation_importance": [
     {
       "feature": "Credit_History",
-      "importance_mean": 0.158,
-      "importance_std": 0.0279
+      "importance_mean": 0.2358,
+      "importance_std": 0.0325
     },
     {
       "feature": "LoanAmount",
-      "importance_mean": 0.0105,
-      "importance_std": 0.0093
+      "importance_mean": 0.0033,
+      "importance_std": 0.004
     },
     {
       "feature": "ApplicantIncome",
-      "importance_mean": 0.01,
-      "importance_std": 0.0063
+      "importance_mean": 0.0024,
+      "importance_std": 0.0037
     },
     {
       "feature": "CoapplicantIncome",
-      "importance_mean": 0.002,
-      "importance_std": 0.0024
+      "importance_mean": 0.0016,
+      "importance_std": 0.0049
     },
     {
       "feature": "Dependents",
-      "importance_mean": 0.0015,
-      "importance_std": 0.0023
-    },
-    {
-      "feature": "Married",
       "importance_mean": 0.0,
       "importance_std": 0.0
     },
     {
       "feature": "Gender",
+      "importance_mean": 0.0,
+      "importance_std": 0.0
+    },
+    {
+      "feature": "Married",
       "importance_mean": 0.0,
       "importance_std": 0.0
     },
@@ -186,53 +186,53 @@
     },
     {
       "feature": "Loan_Amount_Term",
-      "importance_mean": -0.0005,
-      "importance_std": 0.0015
+      "importance_mean": 0.0,
+      "importance_std": 0.0
     },
     {
       "feature": "Property_Area",
-      "importance_mean": -0.001,
-      "importance_std": 0.002
+      "importance_mean": 0.0,
+      "importance_std": 0.0
     }
   ],
   "reason_code_example": {
     "method": "occlusion (probability delta)",
-    "base_probability": 0.48848373668133566,
+    "base_probability": 0.5516419285778527,
     "top_reasons": [
       {
-        "feature": "LoanAmount",
-        "contribution": -0.28773222439909757,
-        "value": 61000.0,
+        "feature": "ApplicantIncome",
+        "contribution": -0.16050601328562186,
+        "value": 8750.0,
         "direction": "reject"
       },
       {
-        "feature": "ApplicantIncome",
-        "contribution": -0.28429915611151096,
-        "value": 12184.625,
+        "feature": "LoanAmount",
+        "contribution": -0.13813026433037157,
+        "value": 261.5,
         "direction": "reject"
       },
       {
         "feature": "Property Area",
-        "contribution": -0.02394174153577816,
-        "value": "Urban",
+        "contribution": -0.1348266789291328,
+        "value": "Rural",
+        "direction": "reject"
+      },
+      {
+        "feature": "CoapplicantIncome",
+        "contribution": -0.08302462332339411,
+        "value": 4167.0,
+        "direction": "reject"
+      },
+      {
+        "feature": "Married",
+        "contribution": -0.06667803303750375,
+        "value": "No",
         "direction": "reject"
       },
       {
         "feature": "Gender",
-        "contribution": 0.02075006676946256,
-        "value": "Female",
-        "direction": "approve"
-      },
-      {
-        "feature": "CoapplicantIncome",
-        "contribution": 0.01834865358239346,
-        "value": 0.0,
-        "direction": "approve"
-      },
-      {
-        "feature": "Married",
         "contribution": 0.0,
-        "value": "Yes",
+        "value": "Male",
         "direction": "approve"
       },
       {
@@ -250,20 +250,17 @@
     ]
   },
   "final_metrics": {
-    "accuracy": 0.835,
-    "precision": 0.8372,
-    "recall": 0.9664,
-    "f1": 0.8972,
-    "roc_auc": 0.7627,
-    "threshold": 0.27,
+    "accuracy": 0.8537,
+    "precision": 0.8317,
+    "recall": 0.9882,
+    "f1": 0.9032,
+    "roc_auc": 0.8136,
+    "threshold": 0.1,
     "best_params": {
-      "clf__weights": [
-        1,
-        1,
-        1
-      ]
+      "clf__C": 0.1,
+      "clf__kernel": "linear"
     },
-    "best_cv_score": 0.845
+    "best_cv_score": 0.7962
   },
   "adopted_model": "tuned"
 }

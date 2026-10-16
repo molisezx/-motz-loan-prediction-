@@ -32,10 +32,11 @@ Engineered: TotalIncome, LoanAmount_log, EMI, Income_to_Loan_Ratio.
 
 ## Training data
 
-1,000 loan applications reconstructed from the client extract
-(`src/generate_dataset.py`, fixed seed 42). Split 800/200 (train/test, stratified).
-Controlled missingness (1–8%) and injected outliers are present in the raw data
-and removed during cleaning.
+614 loan applications from the public Kaggle **Loan Prediction Problem** dataset
+(`altruistdelhite04/loan-prediction-problem-dataset`), fetched by
+`src/fetch_kaggle_data.py` (with a committed offline fallback copy). Split
+491/123 (train/test, stratified). The raw data contains genuine missing values
+(1-8%) and outliers, which are handled during cleaning.
 
 ## Evaluation
 
@@ -49,8 +50,8 @@ See `reports/model_metrics.json` for the exact, reproducible figures.
 
 ## Ethical considerations and limitations
 
-- **Synthetic data:** the extract is statistically reconstructed; real-world
-  performance may differ.
+- **Public data:** the extract is a public Kaggle dataset; real-world performance
+  on Motz's own applicants may differ.
 - **Proxy discrimination:** attributes such as gender and marital status can act
   as proxies for protected characteristics. Any production deployment must audit
   for disparate impact.

@@ -26,9 +26,10 @@ sys.path.insert(0, str(ROOT / "src"))
 from config import CLEAN_DATA, FIGURES_DIR, METRICS_PATH, MODEL_PATH, TRAIN_DATA  # noqa: E402
 from explain import reason_codes  # noqa: E402
 
-PRIMARY = "#1F7A8C"
-GOOD = "#2A9D8F"
-BAD = "#E76F51"
+PRIMARY = "#22D3EE"
+ACCENT = "#A855F7"
+GOOD = "#34D399"
+BAD = "#F87171"
 
 
 # ---------------------------------------------------------------- utilities
@@ -48,31 +49,132 @@ def load_json(path):
 
 def inject_css():
     st.markdown(
-        f"""
+        """
         <style>
-        .main {{ background: linear-gradient(180deg,#F7F9FC 0%,#EEF3F8 100%); }}
-        .block-container {{ padding-top: 1.6rem; max-width: 1180px; }}
-        h1, h2, h3 {{ color: #14303B; letter-spacing: -0.3px; }}
-        .brand {{
-            background: linear-gradient(90deg,{PRIMARY} 0%,#2A9D8F 100%);
-            padding: 22px 26px; border-radius: 16px; color: white; margin-bottom: 8px;
-            box-shadow: 0 6px 20px rgba(31,122,140,0.25);
-        }}
-        .brand h1 {{ color: white; margin: 0; font-size: 1.7rem; }}
-        .brand p {{ margin: 4px 0 0; opacity: .92; }}
-        .card {{
-            background: white; border-radius: 14px; padding: 18px 20px;
-            box-shadow: 0 4px 16px rgba(20,48,59,0.08); border: 1px solid #E6EDF3;
-        }}
-        .metric-card {{
-            background: white; border-radius: 14px; padding: 14px 16px; text-align: center;
-            box-shadow: 0 4px 14px rgba(20,48,59,0.08); border-top: 4px solid {PRIMARY};
-        }}
-        .metric-card .v {{ font-size: 1.7rem; font-weight: 700; color:#14303B; }}
-        .metric-card .l {{ font-size: .78rem; text-transform: uppercase; color:#5C7183; letter-spacing:.04em; }}
-        .pill {{ display:inline-block; padding: 2px 10px; border-radius: 999px; font-size:.75rem; font-weight:600; }}
-        .pill-good {{ background:#E4F5F1; color:#1E7A6B; }}
-        .pill-bad {{ background:#FDEAE4; color:#B5432A; }}
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+        :root{
+            --primary:#22D3EE; --accent:#A855F7; --good:#34D399; --bad:#F87171;
+            --ink:#E6F1FF; --muted:#8AA0B8; --line:rgba(255,255,255,.08);
+        }
+
+        html, body, .stApp, .stMarkdown, p, span, label { font-family:'Inter', system-ui, sans-serif; }
+
+        .stApp{
+            background:
+                radial-gradient(1000px 620px at 10% -12%, rgba(34,211,238,.16), transparent 60%),
+                radial-gradient(900px 620px at 102% -5%, rgba(168,85,247,.20), transparent 55%),
+                radial-gradient(900px 900px at 50% 125%, rgba(34,211,238,.10), transparent 60%),
+                #070B14;
+            color:var(--ink);
+        }
+        .block-container{ padding-top:1.4rem; max-width:1200px; }
+
+        h1,h2,h3,h4,h5{ color:var(--ink); letter-spacing:-.02em; }
+        a{ color:var(--primary); }
+
+        /* ---------------------------------------------------------- brand */
+        .brand{
+            position:relative; overflow:hidden;
+            background:linear-gradient(120deg, rgba(34,211,238,.16), rgba(168,85,247,.18));
+            border:1px solid var(--line); padding:24px 28px; border-radius:18px; margin-bottom:10px;
+            box-shadow:0 0 0 1px rgba(34,211,238,.14), 0 18px 50px rgba(0,0,0,.55),
+                       inset 0 1px 0 rgba(255,255,255,.08);
+            backdrop-filter:blur(14px);
+        }
+        .brand::after{
+            content:''; position:absolute; inset:0; pointer-events:none;
+            background:radial-gradient(420px 220px at 88% -30%, rgba(168,85,247,.40), transparent 72%);
+        }
+        .brand h1{
+            margin:0; font-size:1.75rem; font-weight:800; letter-spacing:-.02em;
+            background:linear-gradient(90deg,#ffffff,#22D3EE 58%,#A855F7);
+            -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+        }
+        .brand p{ margin:7px 0 0; color:#AFC4DA; }
+        .brand .tagline{ font-family:'JetBrains Mono', monospace; font-size:.76rem; letter-spacing:.14em;
+            text-transform:uppercase; color:#7FE9F5; margin-top:10px; }
+        .ai-dot{ display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--good);
+            margin-right:8px; vertical-align:middle;
+            box-shadow:0 0 0 0 rgba(52,211,153,.7); animation:pulse 2s infinite; }
+        @keyframes pulse{
+            0%{ box-shadow:0 0 0 0 rgba(52,211,153,.7); }
+            70%{ box-shadow:0 0 0 10px rgba(52,211,153,0); }
+            100%{ box-shadow:0 0 0 0 rgba(52,211,153,0); }
+        }
+
+        /* ---------------------------------------------------------- cards */
+        .card{
+            background:rgba(255,255,255,.035); border:1px solid var(--line);
+            border-radius:16px; padding:18px 20px;
+            box-shadow:0 12px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05);
+            backdrop-filter:blur(12px);
+        }
+        .metric-card{
+            position:relative; overflow:hidden; text-align:center; padding:16px;
+            background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.015));
+            border:1px solid var(--line); border-radius:16px;
+            box-shadow:0 12px 34px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+        }
+        .metric-card::before{
+            content:''; position:absolute; top:0; left:0; right:0; height:3px;
+            background:linear-gradient(90deg,#22D3EE,#A855F7);
+        }
+        .metric-card .v{ font-size:1.75rem; font-weight:700; color:#fff;
+            font-family:'JetBrains Mono', monospace; line-height:1.15; }
+        .metric-card .l{ font-size:.72rem; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); }
+
+        /* ---------------------------------------------------------- pills */
+        .pill{ display:inline-block; padding:4px 12px; border-radius:999px; font-size:.74rem;
+            font-weight:600; border:1px solid var(--line); }
+        .pill-good{ background:rgba(52,211,153,.12); color:#6EE7B7; border-color:rgba(52,211,153,.35);
+            box-shadow:0 0 18px rgba(52,211,153,.18); }
+        .pill-bad{ background:rgba(248,113,113,.12); color:#FCA5A5; border-color:rgba(248,113,113,.35); }
+
+        /* ------------------------------------------------------- sidebar */
+        section[data-testid="stSidebar"]{
+            background:linear-gradient(180deg, rgba(14,22,38,.92), rgba(7,11,20,.96));
+            border-right:1px solid var(--line);
+        }
+        section[data-testid="stSidebar"] *{ color:#DCE8F5; }
+        section[data-testid="stSidebar"] [role="radiogroup"] label{
+            padding:8px 10px; border-radius:10px; transition:all .15s ease;
+        }
+        section[data-testid="stSidebar"] [role="radiogroup"] label:hover{
+            background:rgba(34,211,238,.10);
+        }
+
+        /* ------------------------------------------------------- widgets */
+        .stButton>button, .stFormSubmitButton>button, .stDownloadButton>button{
+            background:linear-gradient(90deg,#22D3EE,#A855F7); color:#06121F; border:0;
+            border-radius:12px; font-weight:700; padding:.55rem 1.1rem;
+            box-shadow:0 8px 30px rgba(34,211,238,.35); transition:all .15s ease;
+        }
+        .stButton>button:hover, .stFormSubmitButton>button:hover, .stDownloadButton>button:hover{
+            filter:brightness(1.08); transform:translateY(-1px);
+        }
+        .stTextInput input, .stNumberInput input,
+        .stSelectbox div[data-baseweb="select"]>div, .stMultiSelect div[data-baseweb="select"]>div{
+            background:rgba(255,255,255,.05)!important; color:var(--ink)!important;
+            border:1px solid rgba(255,255,255,.12)!important; border-radius:10px!important;
+        }
+        .stTextInput input:focus, .stNumberInput input:focus{
+            border-color:var(--primary)!important; box-shadow:0 0 0 3px rgba(34,211,238,.18)!important;
+        }
+        [data-testid="stDataFrame"], [data-testid="stTable"]{
+            border:1px solid var(--line); border-radius:12px; overflow:hidden;
+        }
+        .stProgress > div > div > div > div{
+            background:linear-gradient(90deg,#22D3EE,#A855F7);
+        }
+        [data-testid="stMetricValue"]{ color:#fff; font-family:'JetBrains Mono', monospace; }
+        [data-testid="stMetricLabel"]{ color:var(--muted); }
+        .stAlert{ background:rgba(34,211,238,.08); border:1px solid rgba(34,211,238,.25); border-radius:12px; }
+        hr{ border-color:var(--line); }
+
+        ::-webkit-scrollbar{ width:10px; height:10px; }
+        ::-webkit-scrollbar-thumb{ background:rgba(34,211,238,.35); border-radius:999px; }
+        ::-webkit-scrollbar-track{ background:transparent; }
         </style>
         """,
         unsafe_allow_html=True,
@@ -91,11 +193,15 @@ def reason_chart(reason):
     names = [r["feature"] for r in rows]
     vals = [r["contribution"] for r in rows]
     colors = [GOOD if v >= 0 else BAD for v in vals]
-    fig, ax = plt.subplots(figsize=(7.5, 4))
-    ax.barh(names, vals, color=colors)
-    ax.axvline(0, color="#333", linewidth=0.8)
-    ax.set_xlabel("Contribution to approval score")
-    ax.set_title("Decision drivers for this applicant")
+    fig, ax = plt.subplots(figsize=(7.5, 4), facecolor="#0B1220")
+    ax.set_facecolor("#0B1220")
+    ax.barh(names, vals, color=colors, edgecolor="none")
+    ax.axvline(0, color="#3B4A63", linewidth=0.9)
+    ax.tick_params(colors="#AFC4DA")
+    for spine in ax.spines.values():
+        spine.set_color("#243247")
+    ax.set_xlabel("Contribution to approval score", color="#AFC4DA")
+    ax.set_title("Decision drivers for this applicant", color="#E6F1FF")
     fig.tight_layout()
     return fig
 
@@ -104,7 +210,9 @@ def reason_chart(reason):
 def page_home(metrics):
     st.markdown(
         '<div class="brand"><h1>Motz Financial Services</h1>'
-        "<p>AI-powered loan decision support &nbsp;·&nbsp; DIAL3110 Fundamentals of Artificial Intelligence</p></div>",
+        "<p><span class='ai-dot'></span>Neural decision engine online &nbsp;·&nbsp; "
+        "AI-powered loan decision support</p>"
+        "<p class='tagline'>DIAL3110 · Fundamentals of Artificial Intelligence</p></div>",
         unsafe_allow_html=True,
     )
     fm = metrics.get("final_metrics", metrics.get("test_metrics", {}))
@@ -318,11 +426,11 @@ def page_about(metrics):
         f"""
 - **Algorithm:** {metrics.get('selected_model', 'n/a')}
 - **Features:** 11 raw applicant attributes → 4 engineered financial features
-- **Training data:** 1,000 applications (800 train / 200 test, stratified)
+- **Training data:** Kaggle loan-prediction dataset (614 applications; 491 train / 123 test, stratified)
 - **Validation:** stratified 5-fold cross-validation across 9 candidate models
 - **Best parameters:** `{fm.get('best_params', {})}`
 - **Intended use:** decision support for loan officers; human review required for edge cases
-- **Limitations:** synthetic/reconstructed extract; credit history is the dominant signal
+- **Limitations:** public Kaggle extract; credit history is the dominant signal
         """
     )
     st.caption("DIAL3110 Fundamentals of Artificial Intelligence · Group Assignment 2026")

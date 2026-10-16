@@ -7,12 +7,14 @@ latest pipeline run.
 """
 import json
 
+import pandas as pd
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 
-from config import BASE_DIR, FIGURES_DIR, METRICS_PATH, TUNING_PATH
+from config import BASE_DIR, CLEAN_DATA, CLEANING_REPORT, FIGURES_DIR, METRICS_PATH, REPORTS_DIR, TARGET, TUNING_PATH
 
 DOCS = BASE_DIR / "docs"
 DOCS.mkdir(exist_ok=True)
@@ -84,6 +86,41 @@ def table(doc, headers, rows):
     return t
 
 
+def add_toc(doc):
+    """Insert a Word table-of-contents field (populated when the document opens)."""
+    para = doc.add_paragraph()
+    run = para.add_run()
+    begin = OxmlElement("w:fldChar")
+    begin.set(qn("w:fldCharType"), "begin")
+    instr = OxmlElement("w:instrText")
+    instr.set(qn("xml:space"), "preserve")
+    instr.text = 'TOC \\o "1-3" \\h \\z \\u'
+    sep = OxmlElement("w:fldChar")
+    sep.set(qn("w:fldCharType"), "separate")
+    placeholder = OxmlElement("w:t")
+    placeholder.text = "Right-click and choose 'Update Field' to build the table of contents."
+    end = OxmlElement("w:fldChar")
+    end.set(qn("w:fldCharType"), "end")
+    run._r.append(begin)
+    run._r.append(instr)
+    run._r.append(sep)
+    run._r.append(placeholder)
+    run._r.append(end)
+
+
+def set_update_fields(doc):
+    """Ask Word to refresh all fields (incl. the TOC) when the document opens."""
+    try:
+        settings = doc.settings.element
+    except AttributeError:  # older python-docx
+        return
+    for existing in settings.findall(qn("w:updateFields")):
+        settings.remove(existing)
+    update = OxmlElement("w:updateFields")
+    update.set(qn("w:val"), "true")
+    settings.append(update)
+
+
 def figure(doc, name, caption, width=5.6):
     path = FIGURES_DIR / name
     if path.exists():
@@ -128,6 +165,9 @@ REFERENCES = [
 def build() -> None:
     metrics = load(METRICS_PATH)
     tuning = load(TUNING_PATH)
+    cleaning = load(CLEANING_REPORT)
+    prep = load(REPORTS_DIR / "preprocessing_report.json")
+    clean = pd.read_csv(CLEAN_DATA)
     comp = metrics["model_comparison"]
     tm = metrics["test_metrics"]
     fm = metrics.get("final_metrics", tm)
@@ -135,6 +175,7 @@ def build() -> None:
 
     doc = Document()
     setup(doc)
+    set_update_fields(doc)
 
     # ------------------------------------------------------------------ cover
     for _ in range(1):
@@ -162,12 +203,23 @@ def build() -> None:
         doc,
         ["Student Name", "Student ID", "Responsibilities"],
         [
-            ["[Member 1]", "[ID]", "Data gathering, cleaning and descriptive analysis"],
-            ["[Member 2]", "[ID]", "Pre-processing, model training and tuning"],
-            ["[Member 3]", "[ID]", "Dashboard development, report and presentation"],
+            ["<your name>", "<student id>", "Data gathering & cleaning (Tasks 1-2)"],
+            ["<your name>", "<student id>", "Model determination, training & tuning (Tasks 3-5)"],
+            ["<your name>", "<student id>", "Dashboard & explainability (Task 6)"],
+            ["<your name>", "<student id>", "Report & presentation (Tasks 7-8)"],
         ],
     )
-    para(doc, "Note: replace the placeholders above with the actual group member details.", italic=True)
+    para(doc, "Replace each <your name> / <student id> placeholder before submitting.", italic=True)
+    doc.add_page_break()
+
+    # -------------------------------------------------------- table of contents
+    title = doc.add_paragraph()
+    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = title.add_run("Table of Contents")
+    run.bold = True
+    run.font.size = Pt(16)
+    run.font.name = "Arial Narrow"
+    add_toc(doc)
     doc.add_page_break()
 
     # --------------------------------------------------------------- abstract
@@ -241,12 +293,14 @@ def build() -> None:
     heading(doc, "2.1 Data Gathering", level=2)
     para(
         doc,
-        "The dataset contains 1,000 loan applications with 12 fields: a unique Loan_ID, six "
-        "categorical background attributes (Gender, Married, Dependents, Education, "
-        "Self_Employed, Property_Area), four numeric/financial attributes (ApplicantIncome, "
-        "CoapplicantIncome, LoanAmount, Loan_Amount_Term), the Credit_History indicator and the "
-        "target Loan_Status (Y/N). The pipeline module generate_dataset.py reproduces this "
-        "extract exactly and is re-runnable with a fixed random seed for full reproducibility.",
+        f"The dataset contains {cleaning['rows_raw']} loan applications with 13 columns: a "
+        "unique Loan_ID, six categorical background attributes (Gender, Married, Dependents, "
+        "Education, Self_Employed, Property_Area), four numeric/financial attributes "
+        "(ApplicantIncome, CoapplicantIncome, LoanAmount, Loan_Amount_Term), the Credit_History "
+        "indicator and the target Loan_Status (Y/N). The data is the public Kaggle \"Loan "
+        "Prediction Problem\" dataset, fetched reproducibly at build time by "
+        "src/fetch_kaggle_data.py, with a committed fallback copy so the pipeline also runs "
+        "offline.",
     )
     heading(doc, "2.2 Missing Values", level=2)
     para(
@@ -268,6 +322,17 @@ def build() -> None:
         "winsorised - capped at the IQR fences. This retains every record while preventing "
         "extreme values from distorting the scaling and the fitted model.",
     )
+    _skipped = [c for c, d in cleaning["outliers"].items() if d.get("note")]
+    if _skipped:
+        para(
+            doc,
+            "One guard is applied: a column whose quartiles coincide (zero IQR) has no "
+            "meaningful fences - clipping would flatten it to a single value. Such columns "
+            f"({', '.join(_skipped)}) are therefore left unchanged, preserving their genuine "
+            "spread. This matters for Loan_Amount_Term, where most applications share a "
+            "360-month term but a minority differ; winsorising would otherwise have collapsed "
+            "the feature to a constant and removed information the model can use.",
+        )
     figure(doc, "02_outliers_raw.png", "Figure 2: Box-plots of numeric features before outlier treatment.")
 
     heading(doc, "2.4 Descriptive Statistical Analysis", level=2)
@@ -277,19 +342,46 @@ def build() -> None:
         "features, and frequency tables summarise the categorical features. Income variables "
         "are right-skewed, motivating the logarithmic transform applied during pre-processing.",
     )
+    _cols = ["ApplicantIncome", "CoapplicantIncome", "LoanAmount", "Loan_Amount_Term"]
+    _stats = cleaning["descriptive_stats"]
     table(
         doc,
-        ["Statistic", "ApplicantIncome", "CoapplicantIncome", "LoanAmount", "Loan_Amount_Term"],
+        ["Statistic", *_cols],
         [
-            ["Mean", "5,262", "1,318", "~201,000", "310"],
-            ["Std. dev.", "2,907", "1,595", "~90,000", "91"],
-            ["Min", "825", "0", "30,000", "60"],
-            ["Max", "12,185", "5,419", "700,000", "480"],
+            [label, *[f"{_stats[c][key]:,.0f}" for c in _cols]]
+            for label, key in [("Mean", "mean"), ("Std. dev.", "std"), ("Min", "min"), ("Max", "max")]
         ],
     )
     figure(doc, "03_feature_distributions.png", "Figure 3: Distribution of the numeric features after cleaning.")
     figure(doc, "04_correlation_heatmap.png", "Figure 4: Correlation matrix of numeric features and the target.")
     figure(doc, "05_target_distribution.png", "Figure 5: Target (loan status) distribution and its relation to property area.")
+
+    heading(doc, "2.5 Key Exploratory Findings", level=2)
+    _approved = int((clean[TARGET] == "Y").sum())
+    _total = int(len(clean))
+    _by_ch = clean.groupby("Credit_History")[TARGET].apply(lambda s: (s == "Y").mean())
+    _by_area = clean.groupby("Property_Area")[TARGET].apply(lambda s: (s == "Y").mean())
+    _r_ch = prep["feature_correlation_with_target"]["Credit_History"]
+    _r_inc = prep["feature_correlation_with_target"]["ApplicantIncome"]
+    bullets(
+        doc,
+        [
+            f"Class balance: {_approved} of {_total} applications were approved "
+            f"({_approved / _total:.1%}), so the target is moderately imbalanced and the "
+            "majority-class accuracy of "
+            f"{_approved / _total:.1%} is the baseline any model must beat.",
+            f"Credit history is the strongest signal: the approval rate is "
+            f"{_by_ch.get(1.0, float('nan')):.1%} for applicants with a good credit history "
+            f"versus {_by_ch.get(0.0, float('nan')):.1%} for those without (r = {_r_ch:.3f}).",
+            f"Property area adds secondary signal: semiurban applications are approved at "
+            f"{_by_area.get('Semiurban', float('nan')):.1%}, urban at "
+            f"{_by_area.get('Urban', float('nan')):.1%} and rural at "
+            f"{_by_area.get('Rural', float('nan')):.1%}.",
+            f"Income is a surprisingly weak predictor of approval in this dataset "
+            f"(r = {_r_inc:.3f}): repayment behaviour (credit history) dominates raw earning "
+            "power, which is why the engineered affordability ratios are useful but secondary.",
+        ],
+    )
 
     heading(doc, "3. Data Pre-processing", level=1)
     heading(doc, "3.1 Feature Extraction", level=2)
@@ -320,9 +412,12 @@ def build() -> None:
         doc,
         "Feature tuning examined the skewness of income and loan variables and the correlation "
         "of each engineered feature with the target. The log transform reduced the LoanAmount "
-        "skewness from 0.847 to -0.355, producing a more symmetric distribution that benefits "
-        "distance- and linear-based models. Correlation analysis showed Credit_History as the "
-        "dominant signal (r = 0.461), while income-derived features carried weaker independent "
+        f"skewness from {prep['skew_before']['LoanAmount_skew_raw']:.3f} to "
+        f"{prep['skew_before']['LoanAmount_log_skew']:.3f}, producing a more symmetric "
+        "distribution that benefits distance- and linear-based models. Correlation analysis "
+        "showed Credit_History as the "
+        f"dominant signal (r = {prep['feature_correlation_with_target']['Credit_History']:.3f}), "
+        "while income-derived features carried weaker independent "
         "signal; they were retained because they improved the model's discrimination and "
         "interpretability.",
     )
@@ -349,16 +444,19 @@ def build() -> None:
     figure(doc, "06_model_comparison.png", "Figure 6: Cross-validation accuracy of the candidate models.")
     para(
         doc,
-        f"Logistic regression produced the best cross-validated accuracy ({comp[0]['cv_accuracy_mean']:.1%}) "
-        "and the joint-highest ROC-AUC, while remaining fast, interpretable and well-calibrated "
-        "for probability output. It was therefore selected as the production model.",
+        f"The {metrics.get('selected_model', comp[0]['model'])} produced the best cross-validated "
+        f"accuracy ({comp[0]['cv_accuracy_mean']:.1%}) and a strong ROC-AUC of "
+        f"{comp[0]['cv_roc_auc_mean']:.3f}, combining the complementary strengths of its base "
+        "learners. It was therefore selected as the production model.",
     )
 
     heading(doc, "5. Model Training and Evaluation", level=1)
     para(
         doc,
-        "The selected pipeline was re-trained on the full training set (800 applications) and "
-        "evaluated on a stratified held-out test set (200 applications) that the model never "
+        "The selected pipeline was re-trained on the full training set "
+        f"({prep['train_rows']} applications) and "
+        "evaluated on a stratified held-out test set "
+        f"({prep['test_rows']} applications) that the model never "
         "saw during training. The confusion matrix and metrics below summarise its performance.",
     )
     table(

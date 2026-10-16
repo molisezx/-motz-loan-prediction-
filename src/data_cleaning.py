@@ -82,10 +82,24 @@ def impute(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
 
 
 def treat_outliers(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
-    """Winsorise numeric columns at the 1.5*IQR fences."""
+    """Winsorise numeric columns at the 1.5*IQR fences.
+
+    Columns with a zero inter-quartile range (near-constant, e.g. a loan term
+    that is 360 months for most applications) are left untouched: their fences
+    collapse onto the median and clipping would flatten the column to a single
+    value, destroying real signal rather than removing outliers.
+    """
     details = {}
     for col in NUMERIC_COLS:
         lower, upper, n_out = detect_outliers_iqr(df[col])
+        if upper <= lower:
+            details[col] = {
+                "lower_fence": round(lower, 1),
+                "upper_fence": round(upper, 1),
+                "outliers_capped": 0,
+                "note": "skipped (zero inter-quartile range)",
+            }
+            continue
         df[col] = df[col].clip(lower=lower, upper=upper)
         details[col] = {"lower_fence": round(lower, 1), "upper_fence": round(upper, 1), "outliers_capped": n_out}
     return df, details

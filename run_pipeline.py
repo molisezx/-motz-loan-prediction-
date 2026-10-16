@@ -2,7 +2,7 @@
 
     python run_pipeline.py
 
-Steps: dataset generation -> cleaning -> pre-processing -> training -> tuning.
+Steps: dataset download -> cleaning -> pre-processing -> training -> tuning.
 A failure in any step aborts the run.
 """
 import subprocess
@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "src"
 
 STEPS = [
-    "generate_dataset.py",
+    "fetch_kaggle_data.py",
     "data_cleaning.py",
     "preprocessing.py",
     "train_model.py",

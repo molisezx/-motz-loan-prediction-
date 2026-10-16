@@ -30,13 +30,16 @@ automated test suite, a REST API, and a themed interactive dashboard.
 
 | Metric | Value |
 |--------|-------|
-| Selected model | **Soft Voting Ensemble** (LR + Random Forest + SVM) |
-| Cross-validated accuracy | **84.5 %** |
-| Test accuracy | **83.5 %** |
-| Recall / Precision | **96.6 % / 83.7 %** |
-| ROC-AUC | **0.763** |
-| Majority-class baseline | 74.4 % |
-| Cost-optimal threshold | 0.27 (FN:FP = 5:1) |
+| Selected model | **Support Vector Machine** (linear kernel) |
+| Cross-validated accuracy | **79.2 %** |
+| Test accuracy | **85.4 %** |
+| Recall / Precision | **98.8 % / 83.2 %** |
+| ROC-AUC | **0.787** |
+| Majority-class baseline | 68.7 % |
+| Cost-optimal threshold | 0.10 (FN:FP = 5:1) |
+
+Data: the public Kaggle **Loan Prediction Problem** dataset (614 labelled
+applications, fetched at build time via `src/fetch_kaggle_data.py`).
 
 ## Repository structure
 
@@ -45,11 +48,11 @@ DIAL3110_Loan_Prediction/
 ├── run_pipeline.py            # one-command end-to-end pipeline
 ├── Makefile · Dockerfile · pyproject.toml · requirements.txt
 ├── .github/workflows/ci.yml   # continuous integration
-├── data/{raw,processed}/      # generated datasets
+├── data/{raw,processed}/      # downloaded & processed datasets
 ├── src/
 │   ├── config.py              # paths & constants
 │   ├── logging_utils.py       # project-wide logging
-│   ├── generate_dataset.py    # Task 1  data gathering
+│   ├── fetch_kaggle_data.py   # Task 1  data gathering (Kaggle download)
 │   ├── data_cleaning.py       # Task 1  missing values, outliers, statistics
 │   ├── preprocessing.py       # Task 2  feature engineering + pipeline factory
 │   ├── models.py              # candidate model registry + hyper-parameter grids
@@ -76,6 +79,35 @@ python -m pip install -r requirements.txt
 python run_pipeline.py            # data → cleaning → features → train → tune → report → slides
 streamlit run dashboard/app.py    # launch the dashboard
 ```
+
+## How to run (for graders)
+
+The trained model, processed datasets, figures, report and slides are all
+committed, so **no pipeline step is required** to inspect the results.
+
+```powershell
+# 1. install dependencies
+python -m pip install -r requirements.txt
+
+# 2. launch the dashboard (opens http://localhost:8501)
+streamlit run dashboard/app.py
+```
+
+Optionally reproduce everything from scratch (deterministic, `RANDOM_STATE = 42`):
+
+```powershell
+python run_pipeline.py            # downloads the Kaggle data, or uses the committed copy if offline
+```
+
+Docker (no Python setup needed):
+
+```powershell
+docker build -t motz-loan .
+docker run -p 8501:8501 motz-loan
+```
+
+No internet is required: if the Kaggle download is unavailable, the pipeline
+falls back to the committed `data/raw/loan_data.csv`.
 
 ## Dashboard
 
@@ -132,7 +164,7 @@ docker run -p 8000:8000 motz-loan uvicorn src.api:app --host 0.0.0.0 --port 8000
 
 | Task | Requirement | Where |
 |------|-------------|-------|
-| 1 | Data gathering, cleaning, missing values, outliers, statistics | `src/data_cleaning.py` |
+| 1 | Data gathering, cleaning, missing values, outliers, statistics | `src/fetch_kaggle_data.py` · `src/data_cleaning.py` |
 | 2 | Feature extraction and tuning | `src/preprocessing.py` |
 | 3 | Model determination with reasoning | `src/train_model.py` |
 | 4 | Model training | `src/train_model.py` |
@@ -144,9 +176,16 @@ docker run -p 8000:8000 motz-loan uvicorn src.api:app --host 0.0.0.0 --port 8000
 ## Reproducibility
 
 Every random operation uses `RANDOM_STATE = 42`. `python run_pipeline.py`
-deterministically recreates the dataset, splits, model, metrics, figures, report
-and slides.
+downloads the Kaggle dataset and deterministically recreates the splits, model,
+metrics, figures, report and slides.
 
 ## Authors
 
-DIAL3110 group members — replace with your names and student IDs.
+Fill in before submitting:
+
+| Name | Student ID | Responsibilities |
+|------|------------|------------------|
+| `<your name>` | `<student id>` | Data gathering & cleaning (Tasks 1–2) |
+| `<your name>` | `<student id>` | Model determination, training & tuning (Tasks 3–5) |
+| `<your name>` | `<student id>` | Dashboard & explainability (Task 6) |
+| `<your name>` | `<student id>` | Report & presentation (Tasks 7–8) |

@@ -21,32 +21,32 @@
     "Property_Area"
   ],
   "skew_before": {
-    "ApplicantIncome_skew": 0.939,
-    "CoapplicantIncome_skew": 1.129,
-    "LoanAmount_skew_raw": 0.847,
-    "LoanAmount_log_skew": -0.355
+    "ApplicantIncome_skew": 1.04,
+    "CoapplicantIncome_skew": 1.013,
+    "LoanAmount_skew_raw": 0.684,
+    "LoanAmount_log_skew": -0.896
   },
   "skew_after": {
-    "ApplicantIncome_skew": 0.939,
-    "CoapplicantIncome_skew": 1.129,
-    "LoanAmount_skew_raw": 0.847,
-    "LoanAmount_log_skew": -0.355
+    "ApplicantIncome_skew": 1.04,
+    "CoapplicantIncome_skew": 1.013,
+    "LoanAmount_skew_raw": 0.684,
+    "LoanAmount_log_skew": -0.896
   },
   "feature_correlation_with_target": {
-    "Credit_History": 0.558,
-    "EMI": 0.008,
-    "Income_to_Loan_Ratio": -0.003,
-    "Loan_Amount_Term": -0.005,
-    "ApplicantIncome": -0.014,
-    "LoanAmount_log": -0.023,
-    "TotalIncome": -0.024,
-    "CoapplicantIncome": -0.025,
-    "LoanAmount": -0.03
+    "Credit_History": 0.541,
+    "Income_to_Loan_Ratio": 0.062,
+    "CoapplicantIncome": 0.012,
+    "TotalIncome": 0.007,
+    "ApplicantIncome": -0.0,
+    "EMI": -0.015,
+    "Loan_Amount_Term": -0.023,
+    "LoanAmount_log": -0.04,
+    "LoanAmount": -0.047
   },
-  "train_rows": 800,
-  "test_rows": 200,
+  "train_rows": 491,
+  "test_rows": 123,
   "class_balance_train": {
-    "1": 0.744,
-    "0": 0.256
+    "1": 0.686,
+    "0": 0.314
   }
 }

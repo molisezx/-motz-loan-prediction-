@@ -1,0 +1,26 @@
+{
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    ".pytest_cache": true,
+    ".ruff_cache": true,
+    "**/*.egg-info": true
+  },
+  "search.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    ".pytest_cache": true,
+    ".ruff_cache": true,
+    "**/*.egg-info": true
+  },
+  "files.watcherExclude": {
+    "**/__pycache__/**": true,
+    ".pytest_cache/**": true,
+    ".ruff_cache/**": true
+  },
+  "python.analysis.exclude": [
+    "**/__pycache__",
+    ".pytest_cache",
+    ".ruff_cache"
+  ]
+}

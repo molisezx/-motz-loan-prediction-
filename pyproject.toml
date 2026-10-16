@@ -15,6 +15,7 @@ dependencies = [
     "seaborn>=0.13",
     "streamlit>=1.36",
     "joblib>=1.4",
+    "kagglehub>=0.3",
     "python-docx>=1.1",
     "python-pptx>=1.0",
     "fastapi>=0.110",
